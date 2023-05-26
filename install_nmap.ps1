@@ -15,6 +15,14 @@ if (!(Get-Command "nmap" -ErrorAction SilentlyContinue)) {
     # Clean up the installer file
     Remove-Item -Path $installerPath -Force
 }
+# by default the nmap will be installed in this path
+$NmapFolder = "C:\Program Files (x86)\Nmap"
+
+# Add Nmap to the system's PATH environment variable
+$envPath = [System.Environment]::GetEnvironmentVariable("Path", "Machine")
+$updatedEnvPath = $envPath + ";" + $NmapFolder
+
+[System.Environment]::SetEnvironmentVariable("Path", $updatedEnvPath, "Machine")
 
 # Verify if Nmap is installed
 if (Get-Command "nmap" -ErrorAction SilentlyContinue) {
