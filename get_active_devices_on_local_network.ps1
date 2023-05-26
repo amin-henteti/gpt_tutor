@@ -1,4 +1,24 @@
 
+# Get the MAC address of the network interface
+
+# Specify the network interface name
+$interfaceName = "Ethernet"  # Replace with the name of your network interface (e.g., "Ethernet", "Wi-Fi")
+
+# Get the network interface object
+$interface = Get-NetAdapter | Where-Object { $_.Name -eq $interfaceName }
+
+# Check if the interface object exists
+if ($interface) {
+    # Retrieve the MAC address
+    $macAddress = $interface.MacAddress
+
+    # Display the MAC address
+    Write-Host "MAC Address: $macAddress"
+} else {
+    Write-Host "Network interface '$interfaceName' not found."
+}
+
+
 # Retrieve the local IP address and subnet mask
 $localIPAddress = (Get-NetIPAddress | Where-Object {$_.AddressFamily -eq "IPv4" -and $_.PrefixOrigin -eq "Manual"}).IPAddress
 $subnetMask = (Get-NetIPAddress | Where-Object {$_.AddressFamily -eq "IPv4" -and $_.PrefixOrigin -eq "Manual"}).PrefixLength
