@@ -253,6 +253,7 @@ def main():
         except Exception as e:
             logger.error("An error occurred during the download.")
             raise Exception(f"Download error: {str(e)}")
+    logger.info(f"Clone of repo {repo_name} is done.")
 
 # Input condition to decide whether to always use default values or prompt the user for input
 USE_DEFAULT_VALUES = input("Do you want to always use default values? (Y/ENTER/N): ").upper() in ("Y", "")
