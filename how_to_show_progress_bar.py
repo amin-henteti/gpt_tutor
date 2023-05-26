@@ -13,7 +13,7 @@ wait_interval = 0.5
 dynamic_size_log_pattern = r"Current Size: (\d+) bytes"
 
 # Simulated download loop
-with tqdm(total=file_size, unit='B', unit_scale=True, desc="Downloading") as progress:
+with tqdm(total=file_size, unit='B', unit_scale=True, desc="Downloading", ncols=80) as progress:
     old_size = 0
     while old_size < file_size:
         # Simulate some processing time
@@ -34,9 +34,9 @@ with tqdm(total=file_size, unit='B', unit_scale=True, desc="Downloading") as pro
         # Calculate the percentage manually
         percent = (progress.n / progress.total) * 100
 
-        # Log the progress
-        # print(f"Progress: {progress.n}/{progress.total} ({percent:.2f}%)")
+        # Log the progress on the same line
+        print(f"\rProgress: {progress.n}/{progress.total} ({percent:.2f}%)", end='')
 
         old_size = new_size
 
-print("Download completed!")
+print("\nDownload completed!")
