@@ -7,7 +7,7 @@ from tqdm import tqdm
 file_size = 1000000000  # 1 GB
 
 # Define the wait interval between updates (in seconds)
-wait_interval = 0.5
+wait_interval = 0.1
 
 # Define the dynamic size log pattern
 dynamic_size_log_pattern = r"Current Size: (\d+) bytes"
@@ -35,7 +35,7 @@ with tqdm(total=file_size, unit='B', unit_scale=True, desc="Downloading", ncols=
         percent = (progress.n / progress.total) * 100
 
         # Log the progress on the same line
-        print(f"\rProgress: {progress.n}/{progress.total} ({percent:.2f}%)", end='')
+        # print(f"\rProgress: {progress.n}/{progress.total} ({percent:.2f}%)", end='')
 
         old_size = new_size
 
