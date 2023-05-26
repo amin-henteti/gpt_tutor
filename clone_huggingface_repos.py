@@ -114,12 +114,11 @@ def download_with_idm(file_url, download_location, filename):
         # Display a progress bar for the download
         wait_interval = get_wait_interval(file_size)
         old_size = 0
-        unit = 1024 * 1024
         dynamic_size_log_pattern = "time \d+, speed \d+, downl (\d+) Bytes"
         # Temporarily remove the stream handler because the stream_handler disturb the progress bar
         logger.removeHandler(stream_handler)
 
-        with tqdm(total=file_size, unit='M', unit_scale=True, desc=f"Downloading {filename}") as progress:
+        with tqdm(total=file_size, unit='B', unit_scale=True, desc=f"Downloading {filename}") as progress:
             while not os.path.exists(str(full_download_path)):
                 time.sleep(wait_interval)
                 # need to get the latest logs by re-reading the log file
@@ -130,16 +129,14 @@ def download_with_idm(file_url, download_location, filename):
                     logger.error(f"encountered an error while trying to get the downloaded size. Error: {str(e)}")
                     continue
                     # continue to check if the download has finished
-                downloaded_data_size = (new_size - old_size) / unit
+                downloaded_data_size = new_size - old_size
                 progress.update(downloaded_data_size)
-
                 # Refresh the progress bar
                 progress.refresh()
-
                 percent = (progress.n / progress.total) * 100
 
                 # Log the progress on the same line
-                logger.debug(f"Progress: {progress.n}/{progress.total} ({percent:.2f}%)")
+                logger.info(f"Progress: {progress.n}/{progress.total} ({percent:.2f}%)")
                 old_size = new_size
     # Restore the stream handler
     logger.addHandler(stream_handler)
