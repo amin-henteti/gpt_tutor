@@ -1,0 +1,15 @@
+venv
+gpt_venv
+speech*
+facebook*
+privateGPT
+*.pyc
+.pytest_cache
+tests/__pycache__
+mytodos.txt
+*pytest*
+settings.json
+*workspace
+*egg-info
+dist
+build
