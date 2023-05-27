@@ -4,30 +4,43 @@ from fuzzywuzzy import fuzz
 import shutil
 
 def get_actual_file_name(file_name, actual_files):
-    # Calculate similarity scores between the given file name and actual file names
+    """
+    Get the actual file name from a list of actual file names based on the highest similarity score with the given file name.
+
+    Args:
+        file_name (str): The file name to match.
+        actual_files (list): List of actual file names.
+
+    Returns:
+        str: The actual file name with the highest similarity score.
+    """
     similarities = [fuzz.ratio(file_name.lower(), actual_file_name.lower()) for actual_file_name in actual_files]
     # Find the index of the highest similarity score
     max_similarity_index = similarities.index(max(similarities))
     # Return the actual file name with the highest similarity
     return actual_files[max_similarity_index]
-    threshold = 80
+    # threshold = 80
     # print("similarity:", similarities[max_similarity_index])
     # Find the indices of elements equal to "similar"
     # ind = np.where(np.isin(find_similar, ["similar"]))[0]
     # ind = list(find_similar).index("similar")
 
 def create_subfolder(folder_path, subfolder_name):
-    # Create a subfolder with the given name inside the folder path
+    """
+    Create a subfolder with the given name inside the provided folder path.
+
+    Args:
+        folder_path (Path): Path to the parent folder.
+        subfolder_name (str): Name of the subfolder.
+
+    Returns:
+        Path: The path to the created subfolder.
+    """
     subfolder_path = folder_path / subfolder_name
     subfolder_path.mkdir(parents=True, exist_ok=True)
     return subfolder_path
 
-if __name__ == "__main__":
-    # Path to the folder containing the files
-    folder_path = Path(r'D:\online_learning\CBTNuggets - Linux Professional Institute LPIC-1 (101-500 & 102-500) 2022-4')
-    # Path to the JSON file
-    json_file_path = Path(r'D:\online_learning\Linux Professional Institute LPIC LPI Certification Training1.json')
-    # Load the JSON data
+def process_files(folder_path, json_file_path):
     with open(json_file_path, 'r') as json_file:
         json_data = json.load(json_file)
 
@@ -50,3 +63,8 @@ if __name__ == "__main__":
                 print(f"{actual_file_name} represents {file_name}")
                 shutil.move(source_file_path, destination_file_path)
                 print(f"Moved {source_file_path} to {destination_file_path}")
+
+if __name__ == "__main__":
+    folder_path = Path('D:/online_learning/linux')
+    json_file_path = Path('D:/online_learning/Linux.json')
+    process_files(folder_path, json_file_path)
