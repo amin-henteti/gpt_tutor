@@ -11,7 +11,7 @@ import logging
 from fuzzywuzzy import fuzz
 
 # Configure logging
-log_filename = 'huggingface_download.log'
+log_filename = 'script_download.log'
 log_format = '%(levelname)s - %(message)s'
 
 # Create a logger and set the log level
@@ -30,18 +30,18 @@ stream_handler.setLevel(logging.INFO)
 stream_handler.setFormatter(logging.Formatter(log_format))
 logger.addHandler(stream_handler)
 
-def get_direct_download_links(repository_url):
+def get_direct_download_links(repository_url, domain):
     """
-    Fetches direct download links from a model repository URL.
+    Fetches direct download links from a repository URL.
 
     Args:
-        repository_url (str): The model repository URL.
+        repository_url (str): The repository URL.
 
     Returns:
         list: A list of direct download links.
     """
     try:
-        # Send a GET request to the model repository page
+        # Send a GET request to the repository page
         response = requests.get(repository_url, timeout=100)
 
         # Parse the HTML content using BeautifulSoup
@@ -49,14 +49,17 @@ def get_direct_download_links(repository_url):
 
         # Find all the file links
         file_links = soup.find_all('a', title="Download file")
-
+        if not file_links:
+            file_links = soup.find_all('a')
+            file_links = list(filter(lambda url: url.get("href", "").endswith(('rar', 'zip')), file_links))
+            
         # Extract the direct download links
         direct_download_links = []
         for link in file_links:
             href = link['href']
             logger.info(f"Found link: {href}")
             if href.startswith('/'):
-                href = 'https://huggingface.co' + href
+                href = f"https://{domain}{href}"
             direct_download_links.append(href)
 
         return direct_download_links
@@ -87,14 +90,24 @@ def download_with_idm(file_url, download_location, filename):
 
     full_download_path = download_location / filename
         
-        
+    # Define the maximum waiting time in seconds
+    max_waiting_time = 300  # 5 minutes
+
+    start_time = time.time()
     # Wait for the file to be created or the file was downloaded very fast
     while not(find_latest_log_file() or os.path.exists(str(full_download_path))):
+        if time.time() - start_time > max_waiting_time:
+            logger.error("Timeout: Maximum waiting time exceeded")
+            raise TimeoutError("Maximum waiting time exceeded")        
         time.sleep(1)
 
+    start_time = time.time()
     time.sleep(5)
     if not os.path.exists(str(full_download_path)):
         while not os.path.exists(str(full_download_path)):
+            if time.time() - start_time > max_waiting_time:
+                logger.error("Timeout: Maximum waiting time exceeded")
+                raise TimeoutError("Maximum waiting time exceeded")        
             time.sleep(5)
             try:
                 latest_log_file = find_latest_log_file(duration=60*5)
@@ -201,20 +214,29 @@ def main():
     Main function to initiate the download process.
     """
     
-    # Prompt the user for a model repository link
-    repository_url = input("Enter the model repository link: ") if not USE_DEFAULT_VALUES else DEFAULT_REPOSITORY_URL
+    # Prompt the user for a repository link
+    repository_url = input("Enter the repository link: ") if not USE_DEFAULT_VALUES else DEFAULT_REPOSITORY_URL
 
-    url_pattern = r"^https://huggingface.co/(.*)/tree/main$"
-    match = re.match(url_pattern, repository_url)
-
-    if not match:
+    url_patterns = (
+        r"^https://(.*?)/(.*?)/tree/main$",
+        r"https://(.*?)/[\d/]+/(\w.*?)/.*$"
+    )
+    for url_pattern in url_patterns:
+        match = re.match(url_pattern, repository_url)
+        if match:
+            logger.info(f"url is in the category of urls of {url_pattern}")
+            break
+    # If a match is found, the code executes the corresponding logic and exits the loop using ``break``.
+    # If no match is found for any of the url_patterns, the loop completes normally without encountering a break.
+    else:
         logger.error("repository_url: {repository_url} does not respect the pattern {url_pattern}")
         raise ValueError("Invalid repository URL")
-    repo_name = match.group(1).replace("/", "_")
+    domain = match.group(1)
+    repo_name = match.group(2).replace("/", "_")
     logger.info(f"Repository name: {repo_name}")
 
     # Fetch direct download links
-    download_links = get_direct_download_links(repository_url)
+    download_links = get_direct_download_links(repository_url, domain)
 
     # Print the direct download links
     for i, link in enumerate(download_links):
@@ -229,8 +251,6 @@ def main():
 
     # Join the current working directory and the repo name.
     download_location = Path(download_location) / repo_name
-    # Create the folder.
-    download_location.mkdir(exist_ok=True)
 
     # Confirm the download location with the user
     logger.info(f"Download location: {download_location}")
@@ -238,6 +258,8 @@ def main():
         confirmation = input("Confirm the download location (Y/ENTER/N): ")
         if confirmation.upper() not in ("Y", ""):
             raise ValueError("Download location confirmation failed.")
+    # Create the folder.
+    download_location.mkdir(exist_ok=True)
 
     for file_index, file_url in enumerate(download_links):
         # Download the selected file using IDM
@@ -260,6 +282,7 @@ USE_DEFAULT_VALUES = input("Do you want to always use default values? (Y/ENTER/N
 
 # Default values
 DEFAULT_REPOSITORY_URL = 'https://huggingface.co/facebook/dino-vitb16/tree/main'
+
 DEFAULT_DOWNLOAD_LOCATION = Path(os.getcwd())
 
 if __name__ == "__main__":
