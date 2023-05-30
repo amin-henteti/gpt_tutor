@@ -281,8 +281,7 @@ def main():
 USE_DEFAULT_VALUES = input("Do you want to always use default values? (Y/ENTER/N): ").upper() in ("Y", "")
 
 # Default values
-DEFAULT_REPOSITORY_URL = "https://downloadlynet.ir/2020/13/3091/03/advanced-rest-apis-with-flask-and-python/02/?#/3091-udemy-132328055830.html"
-'https://huggingface.co/facebook/dino-vitb16/tree/main'
+DEFAULT_REPOSITORY_URL = 'https://huggingface.co/facebook/dino-vitb16/tree/main'
 
 DEFAULT_DOWNLOAD_LOCATION = Path(os.getcwd())
 
