@@ -239,7 +239,7 @@ Please note that restarting the script using `os.system` is a workaround to simu
 
 By clicking the "Clear" button, the app will restart, and you'll have a fresh start to write and display new objects using the other buttons.
 
-### ### use dictionary to handle many conditions
+### use dictionary to handle many conditions
 
 
 Here's an updated version of the Streamlit app that uses buttons with a dictionary to handle the button clicks:
@@ -568,37 +568,6 @@ The main difference between `st.line_chart` and `st.altair_chart` in Streamlit l
 In summary, `st.line_chart` is suitable for simple line charts using Streamlit's built-in functionality, while `st.altair_chart` provides more control and interactivity by leveraging the Altair library. If you require more advanced features or customization options, `st.altair_chart` is a great choice. However, if you need a quick and simple line chart, `st.line_chart` can fulfill that requirement without the need for an external library.
 
 ### interesting story like tutorial about st.altair_chart
-
-
-Once upon a time, in a magical kingdom named Streamlitopia, there was a noble data explorer named Sir Streamlit. Sir Streamlit had a remarkable talent for visualizing data and captivating the kingdom with his stunning charts.
-
-One day, a group of adventurous villagers approached Sir Streamlit with a mysterious dataset. They had discovered an ancient treasure map that revealed the locations of hidden gems scattered across the kingdom. Eager to embark on a thrilling journey, they sought Sir Streamlit's expertise to visualize the treasure data.
-
-With a twinkle in his eyes, Sir Streamlit accepted the challenge. He summoned his trusted companion, Altair the Enchanter, a powerful sorcerer capable of conjuring mesmerizing visualizations. Together, they would bring the treasure hunt to life.
-
-Sir Streamlit began by loading the treasure data into a DataFrame. The data contained valuable information such as the gem types, their coordinates, and their estimated worth. It was a trove of precious insights waiting to be unlocked.
-
-Using the Altair library, Sir Streamlit crafted an interactive scatter plot. Each gem was represented as a vibrant point on the chart, sparkling with different colors based on their types. The x and y coordinates on the plot corresponded to the gem's location in the kingdom.
-
-But Sir Streamlit's creativity knew no bounds. With Altair's magic, he added tooltips to the chart. When a curious villager hovered over a gem, enchanting details would appear, revealing its type and worth. The villagers were thrilled by the interactive nature of the visualization, as if they could almost touch the gems themselves.
-
-To make the chart even more captivating, Sir Streamlit conjured a magical slider. As the villagers moved the slider, the gems on the chart would transform, revealing their true worth. It was as if the treasure was magically materializing before their eyes, empowering them to strategize their search for the most valuable gems.
-
-With each twist and turn, Sir Streamlit's Altair-powered chart provided a visual compass, guiding the villagers on their adventurous quest for riches. They marveled at how Altair effortlessly transformed their raw data into a captivating and immersive experience.
-
-As the treasure hunt progressed, Sir Streamlit continued to refine the chart, adding additional layers of enchantment. He incorporated color encoding to represent the gems' rarity, making the chart even more informative and exciting. The villagers were in awe of the insights they gained from a single glance at the wondrous chart.
-
-Days turned into weeks, and the kingdom was abuzz with tales of Sir Streamlit's Altair-powered visualization. His creation had ignited a newfound passion for data exploration and storytelling among the villagers. The treasure hunt became a remarkable shared experience, with each villager using Sir Streamlit's chart to strategize their individual quests.
-
-In the end, the villagers discovered a bountiful cache of hidden gems, thanks to Sir Streamlit's Altair-powered chart. The treasure hunt not only enriched their lives but also transformed the way they perceived the power of data visualization.
-
-And so, Sir Streamlit and Altair the Enchanter became legends in Streamlitopia, their names forever etched in the kingdom's history. Their tale spread far and wide, inspiring future generations to embrace the magic of data visualization and uncover the hidden treasures within their own datasets.
-
-And thus, the story of Sir Streamlit and his Altair-powered chart became a timeless legend, reminding us of the wondrous possibilities that await those who dare to explore the realm of data visualization.
-
-### include code snippets with examples
-
-Here's an enhanced version of the story that includes code snippets and examples of using `st.altair_chart`:
 
 Once upon a time, in a magical kingdom named Streamlitopia, there was a noble data explorer named Sir Streamlit. Sir Streamlit had a remarkable talent for visualizing data and captivating the kingdom with his stunning charts.
 
