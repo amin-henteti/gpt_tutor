@@ -1,0 +1,14 @@
+[theme]
+primaryColor = "#FD2A51"  # Set the primary color to red
+backgroundColor = "#5ACAA3"  # Set the background color to light gray
+secondaryBackgroundColor="#AED6F1"
+textColor="#FFFFFF"
+font="monospace" # Set the font to sans serif
+
+
+
+[server]
+# By default, uploaded files are limited to 200MB.
+# You can configure this using the server.maxUploadSize config option
+maxUploadSize = 1
+port = 80
